@@ -40,9 +40,37 @@ function main() {
 
 
 
+function mainMessage() {
+	var choices = [", Now", ", Next", ", This Time", ""];
+	if(programStarted == true){ 
+		return ("What Would You Like To Do"
+			+choices[Math.floor(Math.random() * 4 )]+"?" );
+	}else{ 
+		programStarted = true; 
+		return ("What Would You Like To Do?"); 
+	}
+}
 
 
-// CARD CONSTRUCTORS
+
+
+function startUp() {
+	console.log(
+		"\n\n\n\n\n\n\n\n"
+		+"Welcome to Brian's Flash Card App!\n"
+		+returnHR() 
+	);
+	main();
+}
+
+
+startUp();
+
+
+///////////////////////////////
+//START
+// CARD SPECIFIC FUNCTIONS
+///////////////////////////////
 
 function cardConstructor(WhatToDo, callback) {
 	console.log("\n");
@@ -61,23 +89,19 @@ function cardConstructor(WhatToDo, callback) {
 		]).then(function(results) {
 
 			switch (results.command) {
-			  case "Basic":
-			    cardConstructor("create_basicCard",callback);
+				case "Basic": cardPrompt("basic"); 
+				break;
+
+				case "Cloze": cardPrompt("cloze"); 
 			    break;
 
-			  case "Cloze":
-			    cardConstructor("create_clozeCard",callback);
-			    break;
-
-			  case "Return To Main Menu":
-			   	main();
+			    case "Return To Main Menu": main();
 			    break;
 			}
+
 		});
 	}
 	
-	if(WhatToDo == "create_basicCard"){ cardPrompt("basic"); }
-	if(WhatToDo == "create_clozeCard"){ cardPrompt("cloze"); }
 }
 
 function BasicCard(type, front, back) {
@@ -245,19 +269,6 @@ function viewCards(WhatToDo) {
 }
 
 
-
-
-
-
-
-function returnOBJ_List(totalObjects, allObects) {
-	var list = [];
-	for (var i = 0; i < totalObjects; i++) {
-		list.push("Card "+ (i+1) +": "+ allObects[i].type );
-	}
-	return list;
-}
-
 function card_interactions(card_Object) {
 	// console.log(card_Object);
 	inquirer.prompt([
@@ -309,33 +320,6 @@ function card_interactions(card_Object) {
 }
 
 
-//example
-// var firstPresidentCloze = new ClozeCard(
-//     "George Washington was the first president of the United States.", "George Washington"
-// );
-
-
-
-
-
-
-
-
-
-// // Should throw or log an error because "oops" doesn't appear in "This doesn't work"
-// var brokenCloze("This doesn't work", "oops");
-
-function mainMessage() {
-	var choices = [", Now", ", Next", ", This Time", ""];
-	if(programStarted == true){ 
-		return ("What Would You Like To Do"
-			+choices[Math.floor(Math.random() * 4 )]+"?" );
-	}else{ 
-		programStarted = true; 
-		return ("What Would You Like To Do?"); 
-	}
-}
-
 function card_messages(type) {
 	var choices = [];
 
@@ -355,24 +339,29 @@ function card_messages(type) {
 	return choices;
 }
 
-// console.log('Terminal size: ' + process.stdout.columns + 'x' + process.stdout.rows);
+///////////////////////////////
+//END
+// CARD SPECIFIC FUNCTIONS
+///////////////////////////////
 
 
-function startUp() {
-	console.log(
-		"\n\n\n\n\n\n\n\n"
-		+"Welcome to Brian's Flash Card App!\n"
-		+returnHR() )
-	main();
+
+
+
+
+
+//////////////////////////////
+//START 
+//RE-USABLE FUNCTIONS
+//////////////////////////////
+
+function returnOBJ_List(totalObjects, allObects) {
+	var list = [];
+	for (var i = 0; i < totalObjects; i++) {
+		list.push("Card "+ (i+1) +": "+ allObects[i].type );
+	}
+	return list;
 }
-
-
-startUp();
-
-
-
-
-
 
 function returnHR() {
 	var col = process.stdout.columns;
